@@ -6,8 +6,6 @@ import { FlatList, View } from 'react-native';
 
 import { Text } from '@kit/ui';
 
-import { SignOutButton } from './sign-out-button';
-
 type Page = {
   name: string;
   title: string;
@@ -19,16 +17,6 @@ const pages: Page[] = [
     name: 'application',
     title: 'Application',
     href: '/settings/application' as const,
-  },
-  {
-    name: 'profile',
-    title: 'Profile',
-    href: '/settings/profile' as const,
-  },
-  {
-    name: 'account',
-    title: 'Account',
-    href: '/settings/account' as const,
   },
 ];
 
@@ -51,8 +39,6 @@ export function SettingsPagesList() {
           </Link>
         )}
       />
-
-      <SignOutButton />
     </View>
   );
 }

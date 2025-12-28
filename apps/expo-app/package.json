@@ -32,9 +32,6 @@
   },
   "dependencies": {
     "@expo/vector-icons": "catalog:",
-    "@kit/account": "workspace:*",
-    "@kit/auth": "workspace:*",
-    "@kit/supabase": "workspace:^",
     "@kit/ui": "workspace:*",
     "@react-native-async-storage/async-storage": "catalog:",
     "@react-navigation/native": "catalog:",

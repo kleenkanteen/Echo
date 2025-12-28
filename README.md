@@ -1,15 +1,14 @@
-![Expo + Supabase - React Native Starter Kit by MakerKit.dev](apps/expo-app/assets/images/makerkit.webp)
+# Echo
 
-# NEW! Expo + Supabase - React Native Starter Kit by MakerKit.dev
+Turning darkness into light. 
 
-This is a starter kit for React Native applications, mostly useful as a
-companion Starter Kit for [MakerKit](https://makerkit.dev), but can be used as a
-standalone starter kit.
+Made with the React Native + Expo starter kit: [MakerKit](https://makerkit.dev)
 
-It uses Expo and Supabase for authentication and database management.
+# Prerequisites
 
-NB: this is an early preview. It likely contains bugs, and the documentation is
-still incomplete.
+- Node.js
+- pnpm
+- gcloud: `brew install google-cloud-sdk`
 
 ## What's Included
 

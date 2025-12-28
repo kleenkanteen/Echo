@@ -1,0 +1,22 @@
+{
+  "name": "cloud-functions",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Google Cloud Functions",
+  "main": "index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "functions-framework --target=describe",
+    "deploy": "gcloud functions deploy describe --runtime nodejs20 --trigger-http --allow-unauthenticated --set-env-vars GEMINI_API_KEY=$GEMINI_API_KEY"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/functions-framework": "^4.0.1",
+    "@google/genai": "^0.3.0",
+    "busboy": "^1.6.0"
+  }
+}

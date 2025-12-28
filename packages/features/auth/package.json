@@ -1,0 +1,33 @@
+{
+  "name": "@kit/auth",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "scripts": {
+    "clean": "git clean -xdf .turbo node_modules",
+    "format": "prettier --check \"**/*.{ts,tsx}\"",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@hookform/resolvers": "catalog:",
+    "@kit/eslint-config": "workspace:*",
+    "@kit/prettier-config": "workspace:*",
+    "@kit/supabase": "workspace:*",
+    "@kit/tailwind-config": "workspace:*",
+    "@kit/typescript-config": "workspace:*",
+    "@kit/ui": "workspace:*",
+    "@types/react": "catalog:",
+    "expo-auth-session": "catalog:",
+    "react": "catalog:",
+    "react-hook-form": "catalog:",
+    "zod": "catalog:"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@kit/eslint-config"
+    ]
+  },
+  "prettier": "@kit/prettier-config"
+}

@@ -1,0 +1,35 @@
+{
+  "name": "@kit/supabase",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "scripts": {
+    "clean": "git clean -xdf .turbo node_modules",
+    "format": "prettier --check \"**/*.{ts,tsx}\"",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@kit/eslint-config": "workspace:*",
+    "@kit/prettier-config": "workspace:*",
+    "@kit/tailwind-config": "workspace:*",
+    "@kit/typescript-config": "workspace:*",
+    "@types/aes-js": "catalog:",
+    "zod": "catalog:"
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "catalog:",
+    "@supabase/supabase-js": "catalog:",
+    "@tanstack/react-query": "catalog:",
+    "aes-js": "catalog:",
+    "expo-secure-store": "catalog:",
+    "react-native-get-random-values": "catalog:"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@kit/eslint-config"
+    ]
+  },
+  "prettier": "@kit/prettier-config"
+}

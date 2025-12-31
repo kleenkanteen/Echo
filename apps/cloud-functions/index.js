@@ -38,11 +38,16 @@ functions.http("describe", async (req, res) => {
 
     // Prepare the prompt
     const prompt = `Analyze this image and provide:
-    1. A detailed description of what you see in the image
-    2. An estimated distance range in feet from the camera to the main object/subject directly in front
+    1. A concise description of what you see in the image in 1 sentence max and 10 words max. If it is a person, guess what they are doing.
+    2. An estimated distance range in feet from the camera to the main object/subject directly in front.
 
     Format your response as plain text with the description followed by the distance estimate.
-    If you cannot confidently estimate the distance, please state that.`;
+    If you cannot confidently estimate the distance, please state that.
+    
+    Example responses would be:
+    "A person standing using their phone in front of a house. It is about 10 feet away."
+    "A busy traffic intersection. It is about 5 feet away."
+    `;
 
     // Generate content using Gemini 1.5 Pro
     const result = await genAI.models.generateContent({

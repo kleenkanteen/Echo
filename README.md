@@ -17,6 +17,10 @@ The GCP cloud functions are located in the `apps/cloud-functions` directory.
 
 To deploy one, go to that folder and run `gcloud functions deploy {function name} --runtime nodejs20 --trigger-http --allow-unauthenticated`.
 
+# Deploy
+
+I am using (EAS)[https://docs.expo.dev/eas/hosting/get-started/]. First `cd` into `apps/expo-app`. To compile the web version, run `npx expo export --platform web`. To deploy, run `npx eas-cli deploy`.
+
 ## What's Included
 
 ### Core Architecture
@@ -26,42 +30,6 @@ To deploy one, go to that folder and run `gcloud functions deploy {function name
   [React Native Reusable Components](https://rnr-docs.vercel.app/getting-started/introduction/)
 - 🔐 Supabase authentication & basic DB
 - ✨ Full TypeScript + ESLint + Prettier configuration
-
-### Key Features
-
-- 👤 User authentication flow
-- ⚙️ User profile & settings
-- 🔒 Protected routes
-
-### Technologies
-
-This starter kit provides core foundations:
-
-- [Expo](https://expo.dev/) - React Native development environment
-- [React Native](https://reactnative.dev/) - Cross-platform mobile development
-- [Supabase](https://supabase.com/) - Authentication and database management
-- [NativeWind](https://nativewind.dev/) - Tailwind CSS for React Native
-- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
-- [React Native Reusable Components](https://rnr-docs.vercel.app/getting-started/introduction/) -
-  Reusable React Native components
-- [TypeScript](https://www.typescriptlang.org/) - Typed JavaScript
-- [ESLint](https://eslint.org/) - Linting and code formatting
-- [Prettier](https://prettier.io/) - Code formatting
-
-## Preview
-
-![Sign In](apps/expo-app/assets/images/sign-in.png)
-![Sign Up](apps/expo-app/assets/images/sign-up.png)
-
-## Requirements
-
-- Node.js 18.x
-- pnpm
-- Docker (for Supabase)
-
-## Getting Started
-
-Below are the steps to get started with the starter kit.
 
 ### Installation
 
@@ -99,39 +67,3 @@ Replace the `EXPO_PUBLIC_SUPABASE_API_URL` with a proxy if you are testing using
 ```bash
 pnpm dev
 ```
-
-5. Start Supabase
-
-Run the following command to start Supabase:
-
-```
-pnpm run supabase:start
-```
-
-6. Stop Supabase
-
-Run the following command to stop Supabase:
-
-```
-pnpm run supabase:stop
-```
-
-## Documentation
-
-The documentation is not yet available. Please check back later.
-
-## Contributing
-
-Contributions for bug fixed are welcome! However, please open an issue first to
-discuss your ideas before making a pull request.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file
-for more details.
-
-## Support
-
-No support is provided for this kit. Feel free to open an issue if you have any
-questions or need help, but there is no guaranteed response time, nor guarantee
-a fix.

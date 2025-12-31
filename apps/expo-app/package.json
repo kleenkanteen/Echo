@@ -48,6 +48,7 @@
     "expo-status-bar": "catalog:",
     "expo-system-ui": "catalog:",
     "expo-web-browser": "catalog:",
+    "ky": "^1.14.2",
     "lucide-react-native": "catalog:",
     "metro-cache": "catalog:",
     "react": "catalog:",

@@ -10,6 +10,13 @@ Made with the React Native + Expo starter kit: [MakerKit](https://makerkit.dev)
 - pnpm
 - gcloud: `brew install google-cloud-sdk`
 
+
+# Cloud Functions
+
+The GCP cloud functions are located in the `apps/cloud-functions` directory.
+
+To deploy one, go to that folder and run `gcloud functions deploy {function name} --runtime nodejs20 --trigger-http --allow-unauthenticated`.
+
 ## What's Included
 
 ### Core Architecture

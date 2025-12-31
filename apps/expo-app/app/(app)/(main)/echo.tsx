@@ -2,13 +2,21 @@ import React, { useState, useRef } from 'react';
 import { View, Text, TouchableOpacity, Image, Alert, ActivityIndicator } from 'react-native';
 import { CameraView, useCameraPermissions, CameraType, CameraCapturedPicture } from 'expo-camera';
 import * as Speech from 'expo-av';
+import { ElevenLabsClient, play } from '@elevenlabs/elevenlabs-js';
+import { speakTextWithElevenLabs } from './tts';
+
+const ENDPOINT = 'https://us-central1-gen-lang-client-0136115968.cloudfunctions.net/describe';
+
+const elevenlabs = new ElevenLabsClient({ 
+  apiKey: process.env.EXPO_PUBLIC_ELEVENLABS_API_KEY
+});
+
 
 export default function EchoScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [facing, setFacing] = useState<CameraType>('back');
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [description, setDescription] = useState<string | null>(null);
   const cameraRef = useRef<CameraView>(null);
 
   if (!permission) {
@@ -40,53 +48,65 @@ export default function EchoScreen() {
   };
 
   const takePicture = async () => {
-    if (cameraRef.current) {
-      try {
-        const photo: CameraCapturedPicture = await cameraRef.current.takePictureAsync();
-        setCapturedImage(photo.uri);
-        setDescription(null);
-        await processImage(photo.uri);
-      } catch (error) {
-        Alert.alert('Error', 'Failed to take picture');
-        console.error(error);
-      }
+    if (isProcessing) return;
+    if (!cameraRef.current) return;
+
+    setIsProcessing(true);
+
+    try {
+      const photo: CameraCapturedPicture = await cameraRef.current.takePictureAsync();
+      setCapturedImage(photo.uri);
+
+      await processImage(photo.uri);
+    } catch (error) {
+      Alert.alert('Error', 'Failed to take picture');
+      console.error(error);
+    } finally {
+      setIsProcessing(false);
+      setCapturedImage(null);
     }
   };
 
   const processImage = async (imageUri: string) => {
-    setIsProcessing(true);
+    const started_at = Date.now();
     try {
       const result = await mockImageAnalysis(imageUri);
-      setDescription(result);
+      console.log('DESCRIPTION', result);
       await speakText(result);
     } catch (error) {
       Alert.alert('Error', 'Could not process image');
       console.error(error);
     } finally {
-      setIsProcessing(false);
+      const elapsed_ms = Date.now() - started_at;
+      const remaining_ms = Math.max(0, 5000 - elapsed_ms);
+      if (remaining_ms > 0) {
+        await new Promise(resolve => setTimeout(resolve, remaining_ms));
+      }
     }
   };
 
   const mockImageAnalysis = async (imageUri: string): Promise<string> => {
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    return "I can see a table in front of you with a coffee mug. There's a chair on your right and a doorway on the left. The path ahead appears clear.";
+    const blob = await (await fetch(imageUri)).blob();
+
+    const formData = new FormData();
+    formData.append('image', blob);
+
+    const response = await fetch(ENDPOINT, {
+        method: 'POST',
+        body: formData,
+    });
+
+    const text = await response.text();
+
+    if (!response.ok) {
+        throw new Error(`Request failed (${response.status}): ${text}`);
+    }
+
+    return text;
   };
 
   const speakText = async (text: string) => {
-    try {
-      await Speech.Speech.speak(text, {
-        language: 'en-US',
-        pitch: 1.0,
-        rate: 0.9,
-      });
-    } catch (error) {
-      console.error('Speech error:', error);
-    }
-  };
-
-  const resetCamera = () => {
-    setCapturedImage(null);
-    setDescription(null);
+    speakTextWithElevenLabs(text, process.env.EXPO_PUBLIC_ELEVENLABS_API_KEY!);
   };
 
   if (capturedImage) {
@@ -98,24 +118,6 @@ export default function EchoScreen() {
           <View className="absolute inset-0 bg-black/70 items-center justify-center">
             <ActivityIndicator size="large" color="#ffffff" />
             <Text className="text-white mt-4 text-lg">Analyzing scene...</Text>
-          </View>
-        ) : description ? (
-          <View className="absolute bottom-0 left-0 right-0 bg-black/90 p-6">
-            <Text className="text-white text-base leading-6 mb-4">{description}</Text>
-            <View className="flex-row gap-4">
-              <TouchableOpacity
-                onPress={() => speakText(description)}
-                className="flex-1 bg-blue-500 py-3 rounded-lg"
-              >
-                <Text className="text-white text-center font-semibold">Replay Audio</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={resetCamera}
-                className="flex-1 bg-gray-600 py-3 rounded-lg"
-              >
-                <Text className="text-white text-center font-semibold">Take New Photo</Text>
-              </TouchableOpacity>
-            </View>
           </View>
         ) : null}
       </View>

@@ -2,17 +2,23 @@ import functions from "@google-cloud/functions-framework";
 import { GoogleGenAI } from "@google/genai";
 import Busboy from "busboy";
 
-// Initialize Gemini API
 const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
-// HTTP Cloud Function that analyzes images using Gemini 1.5 Pro
 functions.http("describe", async (req, res) => {
-  // Only accept POST requests
   if (req.method !== "POST") {
     return res.status(405).send("Method Not Allowed. Use POST.");
   }
 
-  // Check for API key
+  // for cors
+  res.set('Access-Control-Allow-Origin', '*');
+
+  if (req.method === 'OPTIONS') {
+    res.set('Access-Control-Allow-Methods', 'GET');
+    res.set('Access-Control-Allow-Headers', 'Content-Type');
+    res.set('Access-Control-Max-Age', '3600');
+    res.status(204).send('');
+  } 
+
   if (!process.env.GEMINI_API_KEY) {
     return res
       .status(500)
@@ -20,7 +26,6 @@ functions.http("describe", async (req, res) => {
   }
 
   try {
-    // Parse multipart form data
     const imageData = await parseMultipartForm(req);
 
     if (!imageData) {
@@ -33,15 +38,15 @@ functions.http("describe", async (req, res) => {
 
     // Prepare the prompt
     const prompt = `Analyze this image and provide:
-1. A detailed description of what you see in the image
-2. An estimated distance range in feet from the camera to the main object/subject directly in front
+    1. A detailed description of what you see in the image
+    2. An estimated distance range in feet from the camera to the main object/subject directly in front
 
-Format your response as plain text with the description followed by the distance estimate.
-If you cannot confidently estimate the distance, please state that.`;
+    Format your response as plain text with the description followed by the distance estimate.
+    If you cannot confidently estimate the distance, please state that.`;
 
     // Generate content using Gemini 1.5 Pro
     const result = await genAI.models.generateContent({
-      model: "gemini-3-pro-preview",
+      model: "gemini-2.5-flash-preview-09-2025",
       contents: [
         {
           role: "user",
@@ -60,7 +65,6 @@ If you cannot confidently estimate the distance, please state that.`;
 
     const text = result.text;
 
-    // Return the description
     res.status(200).send(text);
   } catch (error) {
     console.error("Error processing image:", error);
@@ -73,10 +77,8 @@ If you cannot confidently estimate the distance, please state that.`;
   }
 });
 
-// Helper function to parse multipart form data
 function parseMultipartForm(req) {
   return new Promise((resolve, reject) => {
-    // Check if content-type is multipart
     const contentType =
       req.headers["content-type"] || req.headers["Content-Type"];
     if (!contentType || !contentType.includes("multipart/form-data")) {
